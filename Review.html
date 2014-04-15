@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Good Books Review</title>
+
+    <link rel="stylesheet" type="text/css" href="mob-app/bootstrap.min.css"/> 
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    </head>
+    <body><div class="alert alert-success">
+	<!-- need name of book in title -->
+        <h3>Review</h3></div>
+       
+        <span id="result"></span><br/>
+        <input type="button" id="submit" onclick="goBack();" value="Go Back" >
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="mob-app/bootstrap.min.js"></script>
+    </body>
+
+    <script type="text/javascript">
+    $(document).ready(function() {
+        var xhr;
+ 
+        
+        var theUrl = "http://prashantpandit.in/goodbooks.in/node/";
+        var nid=location.search.split('nid=')[1]
+        var response;
+        if (window.XMLHttpRequest) {
+            xhr = new XMLHttpRequest();
+        }
+        else if (window.ActiveXObject) {
+            xhr = new ActiveXObject("Msxml2.XMLHTTP");
+        }
+        else {
+            throw new Error("Ajax is not supported by this browser");
+        }
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {
+           	var result="";
+           	var i;
+                response=JSON.parse(xhr.responseText);
+                var x=response.nodes[0].node;
+                 result=result+ "<div class='alert alert-success'> <br/><span class='alert-link'> Title:"+response.nodes[0].node.Title+"</a><br/><br/><span class='alert-link'> Reviews:"+x["Review content"]+"</span></div>";
+                document.getElementById('result').innerHTML = result;
+                            }
+	   
+        }        
+        theUrl = theUrl+nid+"/json";
+        xhr.open('GET',theUrl, true); 
+                    
+        xhr.send(null);                 
+        });
+        
+        function goBack(){
+        window.history.back();
+        }
+        </script>
+</html>

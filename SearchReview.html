@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Good Books Review</title>
+
+    <link rel="stylesheet" type="text/css" href="mob-app/bootstrap.min.css"/> 
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    </head>
+    <body><div class="alert alert-success">
+        <h3>Hello, which review are you searching for?</h3></div>
+        <form method="get">
+		  <input type="text" id="bookname" placeholder="Enter book name" value="">	
+	      <input type="text" id="authorname" placeholder="Enter author name" value="">	  
+	      <input type="button" id="submit" onclick="postData();" value="Submit" >
+        </form>
+        <span id="result"></span><br/>
+       
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="mob-app/bootstrap.min.js"></script>
+    </body>
+    <script type="text/javascript">
+    function postData() {
+        var xhr;
+        var bookname = document.getElementById("bookname").value;
+        var authorname = document.getElementById("authorname").value;
+        var theUrl = "http://prashantpandit.in/goodbooks.in/json/search?title=";
+        var response;
+        var count;
+        if (window.XMLHttpRequest) {
+            xhr = new XMLHttpRequest();
+        }
+        else if (window.ActiveXObject) {
+            xhr = new ActiveXObject("Msxml2.XMLHTTP");
+        }
+        else {
+            throw new Error("Ajax is not supported by this browser");
+        }
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {
+           	var result="";
+           	var i;
+                response=JSON.parse(xhr.responseText);
+                count=response.nodes.length;
+                for(i=0;i<count;i++){
+               result=result+ "<div class='alert alert-success'> <br/><a href='data.html?nid="+response.nodes[i].node.Nid+"bname="+bookname+"'class='alert-link'> Title:"+response.nodes[i].node.Title+"</a><br/></div>";
+               }
+                document.getElementById('result').innerHTML = "<div class='alert alert-danger'><span class='alert-link'>Yo mann..!!</span>"+count+"results found</div>"+result;
+                
+            }
+	   
+        }        
+        theUrl = theUrl + bookname;
+        xhr.open('GET',theUrl, true);                 
+        xhr.send(null);                 
+        }
+        </script>
+</html>
