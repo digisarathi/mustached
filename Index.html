@@ -54,7 +54,7 @@
                 response=JSON.parse(xhr.responseText);
                 count=response.nodes.length;
                 for(i=0;i<count;i++){
-               result=result+ "<div class='alert alert-success'> <br/><a href='data.html?nid="+response.nodes[i].node.Nid+"bname="+bookname+"'class='alert-link'> Title:"+response.nodes[i].node.Title+"</a><br/></div>";
+               result=result+ "<div class='alert alert-success'> <br/><a href='Review.html?nid="+response.nodes[i].node.Nid+"bname="+bookname+"'class='alert-link'> Title:"+response.nodes[i].node.Title+"</a><br/></div>";
                }
                 document.getElementById('result').innerHTML = "<div class='alert alert-danger'><span class='alert-link'>Yo mann..!!</span>"+count+"results found</div>"+result;
                 
