@@ -17,25 +17,27 @@
     <![endif]-->
     </head>
     <body><div class="alert alert-success">
-	<!-- need name of book in title -->
-        <h3>Review</h3></div>
-       
+        <h3>Hello, which review are you searching for?</h3></div>
+        <form method="get">
+		  <input type="text" id="bookname" placeholder="Enter book name" value="">	
+	      <input type="text" id="authorname" placeholder="Enter author name" value="">	  
+	      <input type="button" id="submit" onclick="postData();" value="Submit" >
+        </form>
         <span id="result"></span><br/>
-        <input type="button" id="submit" onclick="goBack();" value="Go Back" >
+       
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="mob-app/bootstrap.min.js"></script>
     </body>
-
     <script type="text/javascript">
-    $(document).ready(function() {
+    function postData() {
         var xhr;
- 
-        
-        var theUrl = "http://prashantpandit.in/goodbooks.in/node/";
-        var nid=location.search.split('nid=')[1]
+        var bookname = document.getElementById("bookname").value;
+        var authorname = document.getElementById("authorname").value;
+        var theUrl = "http://prashantpandit.in/goodbooks.in/json/search?title=";
         var response;
+        var count;
         if (window.XMLHttpRequest) {
             xhr = new XMLHttpRequest();
         }
@@ -50,21 +52,18 @@
            	var result="";
            	var i;
                 response=JSON.parse(xhr.responseText);
-                var x=response.nodes[0].node;
-                 result=result+ "<div class='alert alert-success'> <br/><span class='alert-link'> Title:"+response.nodes[0].node.Title+"</a><br/><br/><span class='alert-link'> Reviews:"+x["Review content"]+"</span></div>";
-                document.getElementById('result').innerHTML = result;
-                            }
+                count=response.nodes.length;
+                for(i=0;i<count;i++){
+               result=result+ "<div class='alert alert-success'> <br/><a href='data.html?nid="+response.nodes[i].node.Nid+"bname="+bookname+"'class='alert-link'> Title:"+response.nodes[i].node.Title+"</a><br/></div>";
+               }
+                document.getElementById('result').innerHTML = "<div class='alert alert-danger'><span class='alert-link'>Yo mann..!!</span>"+count+"results found</div>"+result;
+                
+            }
 	   
         }        
-        theUrl = theUrl+nid+"/json";
-        xhr.open('GET',theUrl, true); 
-                    
+        theUrl = theUrl + bookname;
+        xhr.open('GET',theUrl, true);                 
         xhr.send(null);                 
-        });
-        
-        function goBack(){
-	<!-- we have to make smart to remmeber result list -->
-        window.history.back();
         }
         </script>
 </html>
